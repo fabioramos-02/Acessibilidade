@@ -1,0 +1,20 @@
+<!-- meu_app/templates/meu_app/resultados.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Acessibilidade</title>
+</head>
+<body>
+    <h1>Relatório de Acessibilidade</h1>
+    
+    {% if relatorio %}
+        <pre>{{ relatorio }}</pre>
+    {% else %}
+        <p>Não há dados disponíveis no relatório.</p>
+    {% endif %}
+
+    <a href="{% url 'index' %}">Voltar para a página inicial</a>
+</body>
+</html>
