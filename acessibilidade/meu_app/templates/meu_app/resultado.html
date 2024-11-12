@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar análise de Acessibilidade Web do Site</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gerar análise de Acessibilidade Web do Site</h1>
+        <form method="post" action="{% url 'index' %}">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Renderiza o formulário Django no template -->
+            <button type="submit">Gerar relatório</button>
+        </form>
+    </div>
+</body>
+</html>
