@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    {% load static %}  <!-- Carrega as tags de arquivos estáticos do Django -->
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerar análise de Acessibilidade Web do Site</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>Gerar análise de Acessibilidade Web do Site</h1>
-        <form method="post" action="{% url 'index' %}">
-            {% csrf_token %}
-            <label for="url">Insira o link do site:</label>
-            <input type="url" id="url" name="url" placeholder="www.ms.gov.br" required>
+    <div class="main-container">
+        <div class="content-container">
+            <h1>Gerar análise<br>de Acessibilidade Web do site</h1>
 
-            <label for="profundidade">Selecione a profundidade:</label>
-            <select id="profundidade" name="profundidade">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="0">Sem profundidade</option>
-            </select>
+            <form method="post" action="{% url 'index' %}">
+                {% csrf_token %}
 
-            <button type="submit">Gerar relatório</button>
-        </form>
+                <div class="inputs-row">
+                    <!-- Campo de URL -->
+                    <div class="input-group">
+                        <label for="url">Insira o link do site</label>
+                        <div class="url-input-container">
+                            <span class="icon-placeholder"></span>
+                            <input type="url" id="url" name="url" placeholder="www.ms.gov.br" required>
+                        </div>
+                    </div>
+
+                    <!-- Campo de Profundidade -->
+                    <div class="input-group">
+                        <label for="profundidade">Selecione a profundidade</label>
+                        <div class="depth-selector">
+                            <select id="profundidade" name="profundidade">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="0">Sem profundidade</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit">Gerar relatório</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

@@ -1,50 +1,126 @@
+/* Estilo para a página principal */
 body {
-    background-color: #EDF5FB;
-    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #004F9F;
+    height: 100vh;
 }
 
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-h1 {
-    font-size: 24px;
-    color: #004F9F;
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #333;
-}
-
-input[type="url"],
-select {
+/* Contêiner principal */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 34px 55px 41px 53px;
+    background-color: #004F9F;
+    height: 100%;
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
 }
 
+/* Contêiner do conteúdo */
+.content-container {
+    width: 1812px;
+    height: 800px;
+    max-width: 90%;
+    background: rgba(228, 237, 243, 0.99);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo do Título */
+h1 {
+    font-size: 64px;
+    font-weight: 600;
+    color: black;
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.2;
+}
+
+/* Grupos de inputs */
+.input-group {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+}
+
+/* Estilo do Label */
+label {
+    font-size: 24px;
+    color: black;
+    font-weight: 400;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Contêiner do input de URL */
+.url-input-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 74px;
+}
+
+.icon-placeholder {
+    width: 50px;
+    height: 40px;
+    opacity: 0.5;
+    margin-right: 15px;
+    background-image: url(../svg/url.svg);
+}
+
+/* Estilo do Input de URL */
+input[type="url"] {
+    width: 100%;
+    border: none;
+    font-size: 32px;
+    color: #B5B5B5;
+    font-weight: 400;
+    outline: none;
+    padding: 0;
+}
+
+/* Contêiner do seletor de profundidade */
+.depth-selector {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    height: 74px;
+    padding: 0 20px;
+}
+
+select {
+    border: none;
+    font-size: 32px;
+    font-weight: 400;
+    color: black;
+    width: 100%;
+    outline: none;
+}
+
+/* Botão de Envio */
 button {
     background-color: #004F9F;
     color: white;
-    padding: 15px;
-    font-size: 16px;
-    width: 100%;
-    margin-top: 20px;
+    font-size: 32px;
+    font-weight: 600;
+    padding: 17px 0;
+    width: 630px;
+    max-width: 100%;
     border: none;
+    border-radius: 60px;
     cursor: pointer;
-    border-radius: 4px;
+    margin-top: 30px;
+    box-shadow: 0px 4px 20px rgba(0, 79, 159, 0.15);
+    transition: background-color 0.3s;
 }
 
 button:hover {

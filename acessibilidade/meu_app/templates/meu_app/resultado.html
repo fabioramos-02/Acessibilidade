@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    {% load static %}  <!-- Carrega a tag static do Django -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerar análise de Acessibilidade Web do Site</title>
@@ -8,10 +9,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Gerar análise de Acessibilidade Web do Site</h1>
+        <h1>Gerar análise<br>de Acessibilidade Web do site</h1>
         <form method="post" action="{% url 'index' %}">
             {% csrf_token %}
-            {{ form.as_p }}  <!-- Renderiza o formulário Django no template -->
+            
+            <div class="input-group">
+                <label for="url">Insira o link do site</label>
+                <input type="url" id="url" name="url" placeholder="www.ms.gov.br" required>
+            </div>
+
+            <div class="input-group">
+                <label for="profundidade">Selecione a profundidade</label>
+                <select id="profundidade" name="profundidade">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="0">Sem profundidade</option>
+                </select>
+            </div>
+
             <button type="submit">Gerar relatório</button>
         </form>
     </div>
