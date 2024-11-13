@@ -63,6 +63,13 @@ ul li strong {
     color: #0056b3;
 }
 
+/* Estilo para limitar o tamanho das imagens */
+ul li img {
+    max-width: 100%;  /* Limita a largura máxima da imagem ao tamanho do contêiner */
+    max-height: 200px; /* Define uma altura máxima */
+    margin: 10px auto; /* Centraliza a imagem dentro do item da lista */
+    border-radius: 5px; /* Adiciona bordas arredondadas, opcional */
+}
 
 
 /* Botão de download */

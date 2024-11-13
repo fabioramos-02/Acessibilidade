@@ -7,6 +7,7 @@
     <title>Relatório de Acessibilidade</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    
 </head>
 <body>
     <h1>Relatório de Acessibilidade</h1>
@@ -14,7 +15,7 @@
     {% if resultado_analises %}
         {% for url, detalhes in resultado_analises.items %}
             <h2>Análise da URL: {{ url }}</h2>
-            <canvas id="grafico_{{ forloop.counter }}" width="400" height="250" class="grafico-canvas"></canvas>
+            <canvas id="grafico_{{ forloop.counter }}" width="300" height="150" class="grafico-canvas"></canvas>
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
