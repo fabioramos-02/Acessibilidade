@@ -1,10 +1,12 @@
-# meu_app/views.py
+# views.py
 from django.shortcuts import render, redirect
 from .forms import AnalisarSiteForm
-from django.http import HttpResponse
-
-from .tools import rastreador_de_url, gerar_relatorio
-
+from .tools.rastreador_de_url import gerar_resposta_json
+from .tools.analisa_imagem import analisa
+from .tools.baixar_img import baixar, limpar_pasta_img
+from .tools.gerar_relatorio import gerar_relatorio_docx
+import json
+import os
 
 def index(request):
     if request.method == 'POST':
@@ -14,28 +16,51 @@ def index(request):
             url = form.cleaned_data['url']
             profundidade = int(form.cleaned_data['profundidade'])
 
-            # Chame as funções em tools para processar a URL
-            resultado_analise = rastreador_de_url.extrair_links(url, profundidade)  # Exemplo de função
-            relatorio = gerar_relatorio.gerar_relatorio_docx(resultado_analise)  # Exemplo de relatório gerado
+            # Limpa a pasta de imagens antes de iniciar a análise
+            limpar_pasta_img()
 
-            # Passe o relatório como contexto para a página de resultados
-            request.session['relatorio'] = relatorio  # Armazena o relatório na sessão
-            return redirect('resultado')  # Redireciona para a página de resultados
+            # Chama a função para gerar os links
+            entrada = gerar_resposta_json(url, profundidade)
+            entrada_dict = json.loads(entrada)
+
+            # Dicionário para armazenar os resultados da análise
+            resultado_analises = {}
+            imagens_baixadas = set()  # Para evitar baixar a mesma imagem mais de uma vez
+
+            for url_info in entrada_dict['urls']:
+                link = url_info['link']
+                try:
+                    analise_resultado = analisa(link)
+                    for imagem in analise_resultado['detalhes_imagens_sem_alt']:
+                        img_url = imagem['img_url']
+                        if img_url not in imagens_baixadas:
+                            nome_arquivo = img_url.split('/')[-1]  # Extrai o nome do arquivo da URL
+                            baixar(img_url, nome_arquivo)  # Baixa a imagem
+                            imagens_baixadas.add(img_url)  # Marca a imagem como baixada
+                    resultado_analises[link] = analise_resultado
+                except Exception as e:
+                    print(f"Erro ao analisar {link}: {e}")
+
+            # Gerar o relatório DOCX
+            nome_arquivo_docx = "relatorio_auditoria.docx"
+            gerar_relatorio_docx(resultado_analises, nome_arquivo_docx)
+
+            # Armazena o resultado e o caminho do relatório na sessão
+            request.session['relatorio'] = resultado_analises
+            request.session['relatorio_docx'] = nome_arquivo_docx
+            return redirect('resultados')
+
     else:
         form = AnalisarSiteForm()
 
     return render(request, 'meu_app/index.html', {'form': form})
 
 
-# meu_app/views.py
-
 def resultado(request):
-    # Recupera o relatório da sessão
-    relatorio = request.session.get('relatorio', None)
-    
-    if not relatorio:
-        # Se não houver relatório, redireciona para a página inicial ou exibe uma mensagem
-        return redirect('index')
+    resultado_analises = request.session.get('relatorio', {})
+    nome_arquivo_docx = request.session.get('relatorio_docx', None)
 
-    # Renderiza a página de resultados com o relatório
-    return render(request, 'meu_app/resultados.html', {'relatorio': relatorio})
+    return render(request, 'meu_app/resultados.html', {
+        'resultado_analises': resultado_analises,
+        'nome_arquivo_docx': nome_arquivo_docx,
+    })

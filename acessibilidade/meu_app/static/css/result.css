@@ -1,0 +1,54 @@
+/* Estilo para o título do relatório */
+h1 {
+    font-size: 2.5em;
+    color: #004F9F;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+/* Estilo para as URLs analisadas */
+h2 {
+    font-size: 1.8em;
+    color: #333333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Estilo para as informações do relatório */
+p {
+    font-size: 1.2em;
+    color: #555555;
+    margin: 5px 0;
+}
+
+/* Lista de imagens sem texto alternativo */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 20px;
+}
+
+ul li img {
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Link para download do relatório */
+a.download-link {
+    font-size: 1.2em;
+    color: #004F9F;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+a.download-link:hover {
+    text-decoration: underline;
+}

@@ -105,23 +105,3 @@ def gerar_resposta_json(url_inicial, profundidade):
     # Retornar o JSON gerado
     return json.dumps(resultado_json, indent=4)
 
-def main():
-    url_inicial = input("Digite a URL inicial: ")
-    
-    # Perguntar se o usuário deseja definir um nível de profundidade
-    while True:
-        escolha = input("Deseja fornecer um nível de profundidade? (s/n): ").strip().lower()
-        if escolha == 's':
-            profundidade = int(input("Digite o nível de profundidade: "))
-            break
-        elif escolha == 'n':
-            profundidade = float('inf')  # Define profundidade como infinita para percorrer todo o site
-            break
-        else:
-            print("Entrada inválida. Por favor, digite 's' para sim e 'n' para não.")
-
-    resultado_json = gerar_resposta_json(url_inicial, profundidade)
-    print(resultado_json)
-
-if __name__ == "__main__":
-    main()

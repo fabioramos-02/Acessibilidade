@@ -1,0 +1,4 @@
+# ignorar pasta img
+img/
+db.sqlite3
+relatorio_auditoria.docx

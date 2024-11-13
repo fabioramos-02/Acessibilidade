@@ -4,13 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Relatório de Acessibilidade</title>
 </head>
 <body>
     <h1>Relatório de Acessibilidade</h1>
-    
-    {% if relatorio %}
-        <pre>{{ relatorio }}</pre>
+
+    {% if resultado_analises %}
+        {% for url, detalhes in resultado_analises.items %}
+            <h2>Análise da URL: {{ url }}</h2>
+            <p>Total de imagens: {{ detalhes.total_imagens }}</p>
+            <p>Imagens com texto alternativo: {{ detalhes.imagens_com_alt }}</p>
+            <p>Imagens sem texto alternativo: {{ detalhes.detalhes_imagens_sem_alt|length }}</p>
+
+            <h3>Detalhes das imagens sem texto alternativo:</h3>
+            <ul>
+                {% for imagem in detalhes.detalhes_imagens_sem_alt %}
+                    <li>
+                        <strong>URL da imagem:</strong>{{ imagem.img_url }}<br>
+                        <!-- <strong>Tag completa:</strong> {{ imagem.tag_completa }}]<br> -->
+                        <!-- mostar imagem -->
+                        <img src="{{ imagem.img_url }}" alt="Imagem sem texto alternativo">
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+        {% if nome_arquivo_docx %}
+            <p><a href="{{ nome_arquivo_docx }}">Baixar Relatório DOCX</a></p>
+        {% endif %}
     {% else %}
         <p>Não há dados disponíveis no relatório.</p>
     {% endif %}
