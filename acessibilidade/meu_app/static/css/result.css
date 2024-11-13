@@ -1,54 +1,92 @@
-/* Estilo para o título do relatório */
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    margin: 0;
+}
+
 h1 {
-    font-size: 2.5em;
-    color: #004F9F;
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    font-size: 2em;
+    color: #0056b3;
+    margin-bottom: 20px;
 }
 
-/* Estilo para as URLs analisadas */
 h2 {
-    font-size: 1.8em;
-    color: #333333;
+    font-size: 1.5em;
+    color: #333;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
     margin-top: 20px;
-    margin-bottom: 10px;
 }
 
-/* Estilo para as informações do relatório */
-p {
+h3 {
     font-size: 1.2em;
-    color: #555555;
-    margin: 5px 0;
+    color: #444;
+    margin-top: 15px;
 }
 
-/* Lista de imagens sem texto alternativo */
+/* Estilo para as URLs */
+.url-section {
+    background-color: #e9f4ff;
+    border: 1px solid #b3d4ff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.url-section a {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.url-section a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para lista de imagens sem alt */
 ul {
     list-style-type: none;
     padding: 0;
 }
 
 ul li {
-    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
 }
 
-ul li img {
-    max-width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-top: 10px;
+ul li strong {
+    color: #0056b3;
 }
 
-/* Link para download do relatório */
-a.download-link {
-    font-size: 1.2em;
-    color: #004F9F;
+
+
+/* Botão de download */
+.download-button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 10px;
+    font-size: 1em;
     font-weight: bold;
+    color: #fff;
+    background-color: #0056b3;
+    border: none;
+    border-radius: 5px;
     text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
 }
 
-a.download-link:hover {
-    text-decoration: underline;
+.download-button:hover {
+    background-color: #004494;
+}
+/* CSS para limitar o tamanho do canvas */
+.grafico-canvas {
+    max-width: 300px;
+    max-height: 150px;
+    margin: auto;
 }

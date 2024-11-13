@@ -1,11 +1,12 @@
-<!-- meu_app/templates/meu_app/resultados.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Relatório de Acessibilidade</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
 </head>
 <body>
     <h1>Relatório de Acessibilidade</h1>
@@ -13,17 +14,55 @@
     {% if resultado_analises %}
         {% for url, detalhes in resultado_analises.items %}
             <h2>Análise da URL: {{ url }}</h2>
-            <p>Total de imagens: {{ detalhes.total_imagens }}</p>
-            <p>Imagens com texto alternativo: {{ detalhes.imagens_com_alt }}</p>
-            <p>Imagens sem texto alternativo: {{ detalhes.detalhes_imagens_sem_alt|length }}</p>
+            <canvas id="grafico_{{ forloop.counter }}" width="400" height="250" class="grafico-canvas"></canvas>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const ctx = document.getElementById('grafico_{{ forloop.counter }}').getContext('2d');
+                    
+                    // Dados do gráfico para esta URL específica
+                    const totalImagens = {{ detalhes.total_imagens }};
+                    const imagensComAlt = {{ detalhes.imagens_com_alt }};
+                    const imagensSemAlt = {{ detalhes.detalhes_imagens_sem_alt|length }};
+                    
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Total de Imagens', 'Imagens com Alt', 'Imagens sem Alt'],
+                            datasets: [{
+                                label: 'Quantidade de Imagens',
+                                data: [totalImagens, imagensComAlt, imagensSemAlt],
+                                backgroundColor: [
+                                    'rgba(54, 162, 235, 0.6)',
+                                    'rgba(75, 192, 192, 0.6)',
+                                    'rgba(255, 99, 132, 0.6)'
+                                ],
+                                borderColor: [
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(255, 99, 132, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
 
             <h3>Detalhes das imagens sem texto alternativo:</h3>
             <ul>
                 {% for imagem in detalhes.detalhes_imagens_sem_alt %}
                     <li>
-                        <strong>URL da imagem:</strong>{{ imagem.img_url }}<br>
-                        <!-- <strong>Tag completa:</strong> {{ imagem.tag_completa }}]<br> -->
-                        <!-- mostar imagem -->
+                        <strong>URL da imagem:</strong> <a href="{{ imagem.img_url }}" target="_blank">{{ imagem.img_url }}</a><br>
                         <img src="{{ imagem.img_url }}" alt="Imagem sem texto alternativo">
                     </li>
                 {% endfor %}

@@ -6,6 +6,9 @@ from docx.oxml.ns import qn
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 import os
+
+
+
 # Função para adicionar bordas e cor de fundo à tabela
 def adicionar_bordas(tabela):
     for row in tabela.rows:
