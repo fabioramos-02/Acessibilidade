@@ -3,3 +3,4 @@ img/
 db.sqlite3
 relatorio_auditoria.docx
 __pycache__/
+*.pyc
