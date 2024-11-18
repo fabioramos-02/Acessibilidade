@@ -27,7 +27,7 @@ h3 {
     margin-top: 15px;
 }
 
-/* Estilo para as URLs */
+/* Contêiner das URLs */
 .url-section {
     background-color: #e9f4ff;
     border: 1px solid #b3d4ff;
@@ -45,7 +45,7 @@ h3 {
     text-decoration: underline;
 }
 
-/* Estilo para lista de imagens sem alt */
+/* Estilo para listas */
 ul {
     list-style-type: none;
     padding: 0;
@@ -63,22 +63,20 @@ ul li strong {
     color: #0056b3;
 }
 
-/* Estilo para limitar o tamanho das imagens */
 ul li img {
-    max-width: 100%;  /* Limita a largura máxima da imagem ao tamanho do contêiner */
-    max-height: 200px; /* Define uma altura máxima */
-    margin: 10px auto; /* Centraliza a imagem dentro do item da lista */
-    border-radius: 5px; /* Adiciona bordas arredondadas, opcional */
+    max-width: 100%;
+    max-height: 200px;
+    margin: 10px auto;
+    border-radius: 5px;
 }
 
-
-/* Botão de download */
+/* Botões */
 .download-button {
-    display: block;
-    width: 200px;
-    margin: 20px auto;
+    display: inline-block;
+    width: auto;
+    padding: 10px 20px;
+    margin: 10px;
     text-align: center;
-    padding: 10px;
     font-size: 1em;
     font-weight: bold;
     color: #fff;
@@ -91,9 +89,11 @@ ul li img {
 .download-button:hover {
     background-color: #004494;
 }
-/* CSS para limitar o tamanho do canvas */
+
+/* Estilos do gráfico */
 .grafico-canvas {
-    max-width: 300px;
-    max-height: 150px;
+    max-width: 100%;
+    max-height: 300px;
+    display: block;
     margin: auto;
 }

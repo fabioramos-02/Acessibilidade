@@ -19,8 +19,8 @@
     {% if resultado_analises %}
         {% for url, detalhes in resultado_analises.items %}
             <div class="url-section">
-                <h2>Análise da URL: {{ url }}</h2>
-                <canvas id="grafico_{{ forloop.counter }}" width="300" height="150" class="grafico-canvas"></canvas>
+                <h2>Análise da URL: <a href="{{ url }}" target="_blank">{{ url }}</a></h2>
+                <canvas id="grafico_{{ forloop.counter }}" class="grafico-canvas"></canvas>
             </div>
 
             <script>
