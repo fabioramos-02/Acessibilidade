@@ -2,30 +2,34 @@
 <html lang="pt-br">
 <head>
     {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Relatório de Acessibilidade</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="{% static 'css/result.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'css/result.css' %}" />
 </head>
 <body>
+    <div class="buttons-container">
+        <a href="{% url 'download_file' 'relatorio_auditoria.docx' %}" class="download-button">Baixar Relatório</a>
+        <a href="{% url 'index' %}" class="download-button">Voltar para Página Inicial</a>
+    </div>
+
     <h1>Relatório de Acessibilidade</h1>
 
     {% if resultado_analises %}
         {% for url, detalhes in resultado_analises.items %}
-            <h2>Análise da URL: {{ url }}</h2>
-            <canvas id="grafico_{{ forloop.counter }}" width="300" height="150" class="grafico-canvas"></canvas>
+            <div class="url-section">
+                <h2>Análise da URL: {{ url }}</h2>
+                <canvas id="grafico_{{ forloop.counter }}" width="300" height="150" class="grafico-canvas"></canvas>
+            </div>
 
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function () {
                     const ctx = document.getElementById('grafico_{{ forloop.counter }}').getContext('2d');
-                    
-                    // Dados do gráfico para esta URL específica
                     const totalImagens = {{ detalhes.total_imagens }};
                     const imagensComAlt = {{ detalhes.imagens_com_alt }};
                     const imagensSemAlt = {{ detalhes.detalhes_imagens_sem_alt|length }};
-                    
+
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -63,20 +67,15 @@
             <ul>
                 {% for imagem in detalhes.detalhes_imagens_sem_alt %}
                     <li>
-                        <strong>URL da imagem:</strong> <a href="{{ imagem.img_url }}" target="_blank">{{ imagem.img_url }}</a><br>
-                        <img src="{{ imagem.img_url }}" alt="Imagem sem texto alternativo">
+                        <strong>URL da imagem:</strong>
+                        <a href="{{ imagem.img_url }}" target="_blank">{{ imagem.img_url }}</a><br />
+                        <img src="{{ imagem.img_url }}" alt="Imagem sem texto alternativo" />
                     </li>
                 {% endfor %}
             </ul>
         {% endfor %}
-
-        {% if nome_arquivo_docx %}
-            <p><a href="{{ nome_arquivo_docx }}">Baixar Relatório DOCX</a></p>
-        {% endif %}
     {% else %}
         <p>Não há dados disponíveis no relatório.</p>
     {% endif %}
-
-    <a href="{% url 'index' %}">Voltar para a página inicial</a>
 </body>
 </html>

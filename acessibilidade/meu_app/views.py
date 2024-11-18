@@ -7,6 +7,7 @@ from .tools.baixar_img import baixar, limpar_pasta_img
 from .tools.gerar_relatorio import gerar_relatorio_docx
 import json
 import os
+from django.http import FileResponse, Http404
 
 def index(request):
     if request.method == 'POST':
@@ -64,3 +65,10 @@ def resultado(request):
         'resultado_analises': resultado_analises,
         'nome_arquivo_docx': nome_arquivo_docx,
     })
+
+def download_file(request, filename):
+    file_path = os.path.join(os.getcwd(), filename)
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=filename)
+    else:
+        raise Http404("Arquivo não encontrado.")
