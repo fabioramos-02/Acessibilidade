@@ -97,3 +97,19 @@ ul li img {
     display: block;
     margin: auto;
 }
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.list-group-item img {
+    max-height: 200px;
+    display: block;
+    margin: auto;
+}
+
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
