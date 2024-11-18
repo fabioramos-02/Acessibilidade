@@ -1,165 +1,45 @@
-/* Estilo para a página principal */
 body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #004F9F;
+    color: #fff;
     height: 100vh;
-}
-
-/* Contêiner principal */
-.main-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #004F9F;
-    height: 100%;
-    width: 100%;
 }
-
-/* Contêiner do conteúdo */
 .content-container {
-    width: 1812px;
-    height: 800px;
-    max-width: 90%;
-    background: rgba(228, 237, 243, 0.99);
+    background-color: #e4edf3;
     border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Estilo do Título */
-h1 {
-    font-size: 64px;
-    font-weight: 600;
-    color: black;
-    text-align: center;
-    margin-bottom: 40px;
-    line-height: 1.2;
-}
-
-/* Grupos de inputs */
-.input-group {
-    margin-bottom: 20px;
-    width: 100%;
-    text-align: left;
-}
-
-/* Estilo do Label */
-label {
-    font-size: 24px;
-    color: black;
-    font-weight: 400;
-    margin-bottom: 8px;
-    display: block;
-}
-
-/* Contêiner do input de URL */
-.url-input-container {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border-radius: 5px;
-    padding: 0 20px;
-    height: 74px;
-}
-
-.icon-placeholder {
-    width: 50px;
-    height: 40px;
-    opacity: 0.5;
-    margin-right: 15px;
-    background-image: url(../svg/url.svg);
-}
-
-/* Estilo do Input de URL */
-input[type="url"] {
-    width: 100%;
-    border: none;
-    font-size: 32px;
-    color: #B5B5B5;
-    font-weight: 400;
-    outline: none;
-    padding: 0;
-}
-
-/* Contêiner do seletor de profundidade */
-.depth-selector {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border-radius: 5px;
-    height: 74px;
-    padding: 0 20px;
-}
-
-select {
-    border: none;
-    font-size: 32px;
-    font-weight: 400;
-    color: black;
-    width: 100%;
-    outline: none;
-}
-
-/* Botão de Envio */
-button {
-    background-color: #004F9F;
-    color: white;
-    font-size: 32px;
-    font-weight: 600;
-    padding: 17px 0;
-    width: 630px;
-    max-width: 100%;
-    border: none;
-    border-radius: 60px;
-    cursor: pointer;
-    margin-top: 30px;
+    padding: 40px;
     box-shadow: 0px 4px 20px rgba(0, 79, 159, 0.15);
-    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 600px;
 }
-
-button:hover {
+.content-container h1 {
+    color: #004F9F;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+.btn-primary {
+    background-color: #004F9F;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
     background-color: #003366;
 }
-
-/* Estilos para o modal */
-.modal {
-    display: none; /* Oculto por padrão */
-    position: fixed;
-    z-index: 1000; /* Aparece acima de outros elementos */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-    justify-content: center;
-    align-items: center;
+.form-label {
+    color: #333;
+    font-weight: bold;
 }
-
-/* Conteúdo do modal */
 .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
+    background-color: #004F9F;
+    color: #fff;
 }
-
-/* Spinner de carregamento */
-.spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-top: 4px solid #0056b3;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 10px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
 }

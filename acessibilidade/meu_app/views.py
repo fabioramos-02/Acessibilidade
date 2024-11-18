@@ -11,7 +11,10 @@ from django.http import FileResponse, Http404
 
 def index(request):
     if request.method == 'POST':
+        print(request.POST)
         form = AnalisarSiteForm(request.POST)
+       
+
         if form.is_valid():
             # Obtenha os dados do formulário
             url = form.cleaned_data['url']

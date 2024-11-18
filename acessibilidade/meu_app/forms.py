@@ -1,6 +1,7 @@
 from django import forms
 
 class AnalisarSiteForm(forms.Form):
+
     url = forms.URLField(
         label="Insira o link do site", 
         required=True
@@ -16,3 +17,4 @@ class AnalisarSiteForm(forms.Form):
         ],
         initial=1
     )
+   

@@ -5,62 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerar Análise de Acessibilidade Web do Site</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
-    <div class="main-container">
-        <div class="content-container">
-            <h1>Gerar análise<br>de Acessibilidade Web do site</h1>
-            <form id="analisarForm" method="post" action="{% url 'index' %}">
-                {% csrf_token %}
-                
-                <div class="inputs-row">
-                    <!-- Campo de URL -->
-                    <div class="input-group">
-                        <label for="url">Insira o link do site</label>
-                        <div class="url-input-container">
-                            <span class="icon-placeholder"></span>
-                            <input type="url" id="url" name="url" placeholder="www.exemplo.gov.br" required>
-                        </div>
-                    </div>
-
-                    <!-- Campo de Profundidade -->
-                    <div class="input-group">
-                        <label for="profundidade">Selecione a profundidade</label>
-                        <div class="depth-selector">
-                            <select id="profundidade" name="profundidade">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="0">Sem profundidade</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit">Gerar relatório</button>
-            </form>
-        </div>
+    <div class="content-container">
+        <h1>Gerar análise de Acessibilidade Web do site</h1>
+        <form id="analisarForm" method="post" action="{% url 'index' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="url" class="form-label">Insira o link do site</label>
+                <input type="url" id="url" name="url" class="form-control" placeholder="https://www.exemplo.gov.br" required>
+            </div>
+            <div class="mb-3">
+                <label for="profundidade" class="form-label">Selecione a profundidade</label>
+                <select id="profundidade" name="profundidade" class="form-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="0">Sem profundidade</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Gerar relatório</button>
+        </form>
     </div>
 
     <!-- Modal de Carregamento -->
-    <div id="loadingModal" class="modal">
-        <div class="modal-content">
-            <div class="spinner"></div>
-            <p>Carregando...</p>
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-body">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="mt-3">Carregando...</p>
+                </div>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Seleciona o formulário e o modal
-        const form = document.getElementById('analisarForm');
-        const loadingModal = document.getElementById('loadingModal');
-
-        // Adiciona um ouvinte de evento para o envio do formulário
-        form.addEventListener('submit', function(event) {
-            // Exibe o modal de carregamento
-            loadingModal.style.display = 'flex';
-        });
+        
     </script>
 </body>
 </html>
