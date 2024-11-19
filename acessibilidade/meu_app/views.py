@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from .forms import AnalisarSiteForm
-from .tools.rastreador_de_url import gerar_resposta_com_selenium
-from .tools.analisa_imagem import analisa
-from .tools.baixar_img import limpar_pasta_img
-from .tools.gerar_relatorio import gerar_relatorio_docx
+from .tools.gerar_relatorio import salvar_relatorio
+from .tools.rastreador_de_url import processar_analise
 import os
 from django.http import FileResponse, Http404
 
 def index(request):
+    """
+    View principal para processar a análise de acessibilidade de um site.
+    """
     if request.method == 'POST':
         form = AnalisarSiteForm(request.POST)
 
@@ -15,33 +16,16 @@ def index(request):
             url = form.cleaned_data['url']
             profundidade = int(form.cleaned_data['profundidade'])
 
-            # Limpa a pasta de imagens
-            limpar_pasta_img()
+            # Processa a análise e gera os resultados
+            resultado_analises = processar_analise(url, profundidade)
 
-            # Gera os links e HTML renderizado com Selenium
-            resposta = gerar_resposta_com_selenium(url, profundidade)
-            paginas_html = resposta.get("paginas_html", {})
-            links_validos = resposta.get("urls", [])
-
-            resultado_analises = {}
-            for url_info in links_validos:
-                link = url_info['link']
-                html_content = paginas_html.get(link, "")
-
-                try:
-                    # Analisa o HTML renderizado
-                    analise_resultado = analisa(link, html_content)
-                    resultado_analises[link] = analise_resultado
-                except Exception as e:
-                    print(f"[ERROR] Falha ao analisar {link}: {e}")
-
-            # Gera o relatório DOCX
-            nome_arquivo_docx = "relatorio_auditoria.docx"
-            gerar_relatorio_docx(resultado_analises, nome_arquivo_docx)
+            # Gera e salva o relatório
+            nome_arquivo_docx = salvar_relatorio(resultado_analises)
 
             # Armazena os resultados na sessão
             request.session['relatorio'] = resultado_analises
             request.session['relatorio_docx'] = nome_arquivo_docx
+
             return redirect('resultados')
 
     else:

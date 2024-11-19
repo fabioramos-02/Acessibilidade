@@ -110,35 +110,11 @@ ul li img {
 
 .modal-body {
     max-height: 400px;
-    overflow-y: auto;
-}
-
-/* Estilos personalizados para o modal */
-.modal-content {
-    color: #fff; /* Texto branco para contraste */
-}
-
-.modal-header {
-    color: #fff;
-}
-
-.modal-title {
-    font-weight: bold;
-}
-
-.modal-body {
     color: #fff;
     max-height: 80vh; /* Altura máxima */
     overflow-y: auto; /* Habilitar rolagem */
 }
 
-
-/* Botão de fechar */
-.btn-close {
-    background-color: #fff;
-    border: none;
-}
-
-.btn-close:hover {
-    background-color: #ddd;
+.modal-title{
+    color: #0056b3;
 }
