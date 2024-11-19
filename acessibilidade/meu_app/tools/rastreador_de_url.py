@@ -7,7 +7,7 @@ from .baixar_img import limpar_pasta_img
 from .analisa_imagem import analisa
 from .baixar_img import iniciar_threads_de_download
 from .baixar_img import encerrar_threads
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import urlparse
 import logging
 from queue import Queue
 
@@ -42,6 +42,7 @@ def processar_analise(url, profundidade):
             # Analisa o HTML renderizado
             analise_resultado = analisa(link, html_content)
             resultado_analises[link] = analise_resultado
+            logger.info(f"Análise concluída para {link}: {analise_resultado}")
         except Exception as e:
             logger.error(f"Falha ao analisar {link}: {e}")
 

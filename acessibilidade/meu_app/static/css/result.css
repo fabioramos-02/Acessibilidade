@@ -118,3 +118,10 @@ ul li img {
 .modal-title{
     color: #0056b3;
 }
+/* Estilo para o texto alternativo sugerido */
+.texto-alternativo {
+    text-align: justify; /* Justificar o texto */
+    font-size: 1rem; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+    margin-top: 10px; /* Espaçamento superior */
+}

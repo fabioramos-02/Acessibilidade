@@ -56,19 +56,19 @@ def baixar(img_url, nome_arquivo, pasta_destino="img"):
         response = requests.get(img_url, stream=True)
         response.raise_for_status()
 
-        # Verifique se o conteúdo é realmente uma imagem
+        # Verifica se o conteúdo é realmente uma imagem
         content_type = response.headers.get('Content-Type', '')
         if 'image' not in content_type:
-            print(f"Erro: {img_url} não é uma imagem válida.")
+            print(f"[INFO] Ignorando arquivo não-imagem: {img_url}")
             return
 
         # Salvar a imagem
         caminho_completo = os.path.join(pasta_destino, nome_arquivo)
         image = Image.open(BytesIO(response.content))
         image.save(caminho_completo)
-        print(f"Imagem salva: {caminho_completo}")
+        print(f"[INFO] Imagem salva: {caminho_completo}")
     except Exception as e:
-        print(f"Erro ao baixar a imagem {img_url}: {e}")
+        print(f"[ERROR] Erro ao baixar a imagem {img_url}: {e}")
 
 def limpar_pasta_img(pasta="img"):
     if os.path.exists(pasta):

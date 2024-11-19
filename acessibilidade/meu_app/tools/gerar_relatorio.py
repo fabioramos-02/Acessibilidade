@@ -1,6 +1,5 @@
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
-from fpdf import FPDF
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.oxml import parse_xml
