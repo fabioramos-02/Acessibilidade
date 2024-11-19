@@ -13,7 +13,7 @@ def salvar_relatorio(resultado_analises):
     """
     nome_arquivo_docx = "relatorio_auditoria.docx"
     gerar_relatorio_docx(resultado_analises, nome_arquivo_docx)
-    return nome_arquivo_docx
+    return nome_arquivo_docx    
 
 # Função para adicionar bordas e cor de fundo à tabela
 def adicionar_bordas(tabela):
