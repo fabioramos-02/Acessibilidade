@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-from .baixar_img import baixar
 import requests
+from .baixar_img import download_queue
+import logging
+from .utils import normalizar_url
 
+# Configuração do logger
+logger = logging.getLogger(__name__)
 def analisa(url, html_content=None):
     """
     Analisa o HTML renderizado para identificar imagens sem texto alternativo.
@@ -22,13 +26,15 @@ def analisa(url, html_content=None):
         for img in imagens:
             alt = img.get('alt', '').strip()
             img_url = urljoin(url, img.get('src', ''))
+
+            # Normaliza a URL da imagem antes de enfileirar
+            img_url_normalizada = normalizar_url(img_url)
             if alt:
                 imagens_com_alt += 1
             else:
-                # Adiciona ao relatório e tenta baixar a imagem
-                imagens_sem_alt.append({"img_url": img_url, "alt": alt})
-                nome_arquivo = img_url.split('/')[-1]
-                baixar(img_url, nome_arquivo)
+                imagens_sem_alt.append({"img_url": img_url_normalizada, "alt": alt})
+                nome_arquivo = img_url_normalizada.split('/')[-1]
+                download_queue.put((img_url_normalizada, nome_arquivo))  # Adiciona à fila
 
         return {
             "url": url,
@@ -40,5 +46,5 @@ def analisa(url, html_content=None):
         }
 
     except Exception as e:
-        print(f"Erro ao analisar imagens na URL {url}: {str(e)}")
+        logger.error(f"Erro ao analisar imagens na URL {url}: {e}")
         return {"error": str(e)}
