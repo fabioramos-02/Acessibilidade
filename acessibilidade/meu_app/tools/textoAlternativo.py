@@ -8,6 +8,21 @@ logger = logging.getLogger(__name__)
 # Configuração da API da OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# Prompt estruturado para o agente de acessibilidade
+PROMPT_ACESSIBILIDADE = """
+Você é um agente de acessibilidade responsável por sugerir textos alternativos para imagens. 
+Seu objetivo é fornecer uma descrição clara, objetiva e curta, usando uma linguagem cidadã simples e acessível. 
+Considere que as imagens serão disponibilizadas em um site governamental.
+
+Instruções:
+- Descreva a imagem.
+- Seja breve e evite detalhes irrelevantes.
+- Use no máximo 20 palavras.
+- Não explique o propósito da imagem, apenas descreva.
+
+A imagem está disponível neste URL: {url_imagem}. Baseie sua descrição nela.
+"""
+
 def gerar_texto_alternativo_por_url(url_imagem):
     """
     Gera um texto alternativo para uma imagem usando sua URL com o modelo gpt-4o.
@@ -20,7 +35,7 @@ def gerar_texto_alternativo_por_url(url_imagem):
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Descreva esta imagem de forma clara, objetiva e acessível para o público geral, considerando que será utilizada em um site governamental."},
+                        {"type": "text", "text": PROMPT_ACESSIBILIDADE},
                         {"type": "image_url", "image_url": {"url": url_imagem}}
                     ]
                 }
