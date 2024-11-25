@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import AnalisarSiteForm
 from .tools.gerar_relatorio import salvar_relatorio
 from .tools.rastreador_de_url import processar_analise
+from .tools.db import salvar_resultados
 import os
 from django.http import FileResponse, Http404
 
@@ -21,12 +22,16 @@ def index(request):
 
             # Gera e salva o relatório
             nome_arquivo_docx = salvar_relatorio(resultado_analises)
+            # salvar no banco de dados
+            salvar_resultados(resultado_analises)
+            
 
             # Armazena os resultados na sessão
             request.session['relatorio'] = resultado_analises
             request.session['relatorio_docx'] = nome_arquivo_docx
+            
 
-            return redirect('resultados')
+            return redirect('resultados')   
 
     else:
         form = AnalisarSiteForm()
