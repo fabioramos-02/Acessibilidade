@@ -17,6 +17,34 @@ download_queue = Queue()
 logger = logging.getLogger(__name__)
 
 
+def criar_driver():
+    """
+    Cria e configura o WebDriver Selenium.
+    """
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-software-rasterizer")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    return webdriver.Chrome(options=chrome_options)
+
+
+def filtrar_links(links, extensoes_ignoradas, dominio, visitados):
+    """
+    Filtra links válidos, removendo duplicados e extensões indesejadas.
+    """
+    hrefs = set()
+    for link in links:
+        href = link.get('href')
+        if href and not href.startswith(('javascript:', 'mailto:')) and '@' not in href:
+            href = quote(href, safe=':/?&=#')
+            href = urljoin(dominio, href)
+            if href.lower().endswith(extensoes_ignoradas) or href in visitados:
+                continue
+            hrefs.add(href)
+    return hrefs
+
         
 def processar_analise(url, profundidade):
     """
@@ -28,7 +56,7 @@ def processar_analise(url, profundidade):
     # Inicia threads para download paralelo
     threads = iniciar_threads_de_download()
 
-    # Gera os links e HTML renderizado com Selenium
+     # Gera os links e HTML renderizado
     resposta = gerar_resposta_com_selenium(url, profundidade)
     paginas_html = resposta.get("paginas_html", {})
     links_validos = resposta.get("urls", [])
@@ -39,7 +67,6 @@ def processar_analise(url, profundidade):
         html_content = paginas_html.get(link, "")
 
         try:
-            # Analisa o HTML renderizado
             analise_resultado = analisa(link, html_content)
             resultado_analises[link] = analise_resultado
             logger.info(f"Análise concluída para {link}: {analise_resultado}")
@@ -53,110 +80,64 @@ def processar_analise(url, profundidade):
     return resultado_analises
 
 
-def extrair_links_e_html_com_selenium(url, profundidade, visitados=None):
+def extrair_links_e_html_com_selenium(driver, url, visitados, extensoes_ignoradas):
     """
-    Extrai links e HTML renderizado utilizando Selenium.
-    Se profundidade = 0, percorre todos os links do domínio sem limite de profundidade.
+    Extrai links e HTML renderizado de uma URL.
     """
-    if visitados is None:
-        visitados = set()
-
-    # Extensões de arquivos a serem ignorados
-    extensoes_ignoradas = ('.pdf', '.docx', '.png', '.jpg', '.jpeg', '.gif', '.zip', '.rar')
-
-    # Configurações do Selenium
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(options=chrome_options)
-
     try:
-        # Normaliza a URL antes de verificar se já foi visitada
-        url_normalizada = normalizar_url(url)
-        if url_normalizada in visitados:
-            print(f"[INFO] Ignorando link já visitado: {url_normalizada}")
-            return set(), {}
-
-        print(f"[INFO] Acessando URL: {url_normalizada}")
-        driver.get(url_normalizada)
-        driver.implicitly_wait(1)
-
+        logger.info(f"Acessando URL: {url}")
+        driver.get(url)
         html = driver.page_source
+
         soup = BeautifulSoup(html, "html.parser")
-
         links = soup.find_all('a', href=True)
-        hrefs = set()
+        hrefs = filtrar_links(links, extensoes_ignoradas, url, visitados)
 
-        # Adiciona a URL atual ao conjunto de visitados
-        visitados.add(url_normalizada)
-
-        # Extrai links do mesmo domínio e ignora links com extensões indesejadas
-        for link in links:
-            href = link.get('href')
-            if href and not href.startswith(('javascript:', 'mailto:')) and '@' not in href:
-                href = quote(href, safe=':/?&=#')
-                href = urljoin(url_normalizada, href)
-
-                # Ignora links com extensões indesejadas
-                if href.lower().endswith(extensoes_ignoradas):
-                    print(f"[INFO] Ignorando arquivo de mídia: {href}")
-                    continue
-
-                # Normaliza o link antes de verificar se foi visitado
-                href_normalizada = normalizar_url(href)
-                if urlparse(href).netloc == urlparse(url_normalizada).netloc and href_normalizada not in visitados:
-                    hrefs.add(href_normalizada)
-
-        paginas_html = {url_normalizada: html}
-
-        # Caso "Sem profundidade", continua até que não haja mais links novos
-        if profundidade == 0:
-            while hrefs:
-                novo_link = hrefs.pop()
-                if novo_link not in visitados:
-                    novos_hrefs, novos_htmls = extrair_links_e_html_com_selenium(novo_link, profundidade, visitados)
-                    hrefs.update(novos_hrefs)
-                    paginas_html.update(novos_htmls)
-
-        # Caso profundidade > 1, processa recursivamente
-        elif profundidade > 1:
-            for href in list(hrefs):
-                if href not in visitados:  # Apenas processa links não visitados
-                    novos_hrefs, novos_htmls = extrair_links_e_html_com_selenium(href, profundidade - 1, visitados)
-                    hrefs.update(novos_hrefs)
-                    paginas_html.update(novos_htmls)
-
-        return visitados, paginas_html
+        return hrefs, {url: html}
 
     except Exception as e:
-        print(f"[ERROR] Erro ao acessar {url}: {e}")
+        logger.error(f"Erro ao acessar {url}: {e}")
         return set(), {}
-
-    finally:
-        driver.quit()
 
 
 
 
 def gerar_resposta_com_selenium(url_inicial, profundidade):
-    try:
-        todos_os_links, paginas_html = extrair_links_e_html_com_selenium(url_inicial, profundidade=profundidade)
-        links_validos = [link for link in todos_os_links if urlparse(link).scheme in ['http', 'https']]
+    """
+    Gera uma resposta com links e HTML renderizado a partir de uma URL inicial.
+    """
+    extensoes_ignoradas = ('.pdf', '.docx', '.png', '.jpg', '.jpeg', '.gif', '.zip', '.rar')
+    visitados, paginas_html = set(), {}
+    fila = Queue()
+    fila.put((url_inicial, profundidade))
 
+    driver = criar_driver()
+    try:
+        while not fila.empty():
+            url, prof = fila.get()
+            if prof == 0 or url in visitados:
+                continue
+
+            novos_links, htmls = extrair_links_e_html_com_selenium(driver, url, visitados, extensoes_ignoradas)
+            visitados.add(url)
+            paginas_html.update(htmls)
+
+            for link in novos_links:
+                fila.put((link, prof - 1))
+
+        links_validos = [link for link in visitados if urlparse(link).scheme in ['http', 'https']]
         resultado = {
             "url": url_inicial,
             "quantidade_valida": len(links_validos),
             "urls": [{"link": link} for link in links_validos],
-            "paginas_html": paginas_html  # Adicionando os HTMLs renderizados
+            "paginas_html": paginas_html,
         }
 
-        print(f"[INFO] Total de links válidos encontrados: {len(links_validos)}")
-        print(f"[INFO] Total de páginas HTML renderizadas: {len(paginas_html)}")
+        logger.info(f"Total de links válidos encontrados: {len(links_validos)}")
+        logger.info(f"Total de páginas HTML renderizadas: {len(paginas_html)}")
         return resultado
 
-    except Exception as e:
-        print(f"[ERROR] Erro ao gerar resposta: {e}")
-        return {"error": str(e)}
+    finally:
+        driver.quit()
+
     
